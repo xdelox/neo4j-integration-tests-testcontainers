@@ -55,6 +55,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
+/.idea/vcs.xml
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -164,4 +165,4 @@ buildNumber.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/java,maven,intellij
 
-# idea plugins
+
