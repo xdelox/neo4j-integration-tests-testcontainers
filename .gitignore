@@ -7,8 +7,8 @@
 
 
 .idea/
-.idea/*
-.idea
+.idea/**
+.idea/encodings.xml
 *.iml
 *.ipr
 
