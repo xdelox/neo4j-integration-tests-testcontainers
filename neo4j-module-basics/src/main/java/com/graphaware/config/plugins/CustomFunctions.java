@@ -1,10 +1,10 @@
-package com.graphaware.example;
+package com.graphaware.config.plugins;
 
 import net.datafaker.Faker;
 import org.neo4j.procedure.Description;
 import org.neo4j.procedure.UserFunction;
 
-public class ChuckNorris {
+public class CustomFunctions {
 
     @UserFunction
     @Description("random quote from Chuck Norris")

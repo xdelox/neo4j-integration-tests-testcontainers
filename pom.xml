@@ -32,27 +32,6 @@
             </dependency>
 
 
-<!--            <dependency>-->
-<!--                <groupId>org.testcontainers</groupId>-->
-<!--                <artifactId>junit-jupiter</artifactId>-->
-<!--                <version>1.17.6</version>-->
-<!--                <scope>test</scope>-->
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>junit</groupId>-->
-<!--                        <artifactId>junit</artifactId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
-<!--            </dependency>-->
-
-            <dependency>
-                <groupId>org.testcontainers</groupId>
-                <artifactId>neo4j</artifactId>
-                <version>1.17.6</version>
-                <scope>test</scope>
-            </dependency>
-
-
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>
@@ -87,7 +66,7 @@
 
     <modules>
         <module>neo4j-vs-generic-container</module>
-        <module>testcontainers-vs-harness</module>
+        <module>neo4j-module-basics</module>
     </modules>
 
 

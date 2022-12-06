@@ -1,5 +1,7 @@
-package com.graphaware.example;
+package com.graphaware.config.plugins;
 
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Tags;
 import org.junit.jupiter.api.Test;
 import org.neo4j.driver.*;
 import org.testcontainers.containers.Neo4jContainer;
@@ -10,11 +12,12 @@ import org.testcontainers.utility.MountableFile;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Testcontainers
+@Tag("neo4j-module")
 class ChuckNorrisTestContainerIT {
 
     @Container
-    private static final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.2")
-        .withPlugins(MountableFile.forHostPath("target/testcontainers-vs-harness-all.jar"))
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer("neo4j:5.2")
+        .withPlugins(MountableFile.forHostPath("target/neo4j-module-basics-all.jar"))
         ;
 
     @Test
@@ -27,7 +30,7 @@ class ChuckNorrisTestContainerIT {
             Session session = driver.session();
         ) {
             // When
-            String result = session.run("RETURN com.graphaware.example.chuckNorris() AS result").single().get("result").asString();
+            String result = session.run("RETURN com.graphaware.config.plugins.chuckNorris() AS result").single().get("result").asString();
 
             // Then
             assertThat(result).containsIgnoringCase("Chuck");

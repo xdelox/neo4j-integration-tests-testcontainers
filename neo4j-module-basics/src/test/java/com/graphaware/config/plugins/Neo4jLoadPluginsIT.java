@@ -1,5 +1,6 @@
-package com.graphaware.testcontainers.plugins;
+package com.graphaware.config.plugins;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.neo4j.driver.*;
 import org.testcontainers.containers.Neo4jContainer;
@@ -12,19 +13,20 @@ import java.lang.Record;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @Testcontainers
-public class Neo4jLoadPluginsIT implements PluginsTest {
+@Tag("neo4j-module")
+class Neo4jLoadPluginsIT {
 
     @Container
     private static final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.1")
-        .withPlugins(MountableFile.forHostPath("target/neo4j-vs-generic-container.jar")) //This first
+        .withPlugins(MountableFile.forHostPath("target/neo4j-module-basics-all.jar")) //This first
         .withLabsPlugins(Neo4jLabsPlugin.APOC);
 
     @Test
-    @Override
-    public void load_neo4jlabs_plugins() {
+    void load_neo4jlabs_plugins() {
         AuthToken authToken = AuthTokens.basic("neo4j", "password");
         String boltUrl = neo4jContainer.getBoltUrl();
         System.out.println(boltUrl);
@@ -37,25 +39,10 @@ public class Neo4jLoadPluginsIT implements PluginsTest {
         }
     }
 
-    @Test
-    @Override
-    public void load_generic_plugin_fat_jar() {
-        AuthToken authToken = AuthTokens.basic("neo4j", "password");
-        String boltUrl = neo4jContainer.getBoltUrl();
-        System.out.println(boltUrl);
-        try (
-            Driver driver = GraphDatabase.driver(boltUrl, authToken);
-            Session session = driver.session();
-        ) {
-            final Result result = session.run("RETURN example.test() AS value");
-            long value = result.single().get("value").asLong();
-            assertThat(value).isEqualTo(42L);
-        }
-    }
+
 
     @Test
-    @Override
-    public void load_generic_plugin_without_dependencies() {
+    void load_generic_plugin() {
         AuthToken authToken = AuthTokens.basic("neo4j", "password");
         String boltUrl = neo4jContainer.getBoltUrl();
         System.out.println(boltUrl);
@@ -63,9 +50,11 @@ public class Neo4jLoadPluginsIT implements PluginsTest {
             Driver driver = GraphDatabase.driver(boltUrl, authToken);
             Session session = driver.session();
         ) {
-            final Result result = session.run("RETURN example.testWithDependency() AS value");
-            var value = result.single().get("value").asList();
-            assertThat(value).hasSizeGreaterThan(1);
+            session.run("CREATE (:Person)-[:INCOMING]->(:Movie {id:1})-[:OUTGOING]->(:Person)");
+            var record = session.run("MATCH (u:Movie {id:1}) CALL example.getRelationshipTypes(u) YIELD outgoing, incoming RETURN outgoing, incoming").single();
+
+            assertEquals(1,record.get("outgoing").asInt());
+            assertEquals(1, record.get("incoming").asInt());
         }
     }
 }

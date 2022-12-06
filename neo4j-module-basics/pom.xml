@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>testcontainers-vs-harness</artifactId>
+    <artifactId>neo4j-module-basics</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -58,7 +58,6 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
