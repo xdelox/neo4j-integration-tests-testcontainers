@@ -107,7 +107,7 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>${project.artifactId}</finalName>
+        <finalName>${project.artifactId}-all</finalName>
     </build>
 
 </project>
