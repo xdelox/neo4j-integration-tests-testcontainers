@@ -17,8 +17,7 @@ class ChuckNorrisTestContainerIT {
 
     @Container
     private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer("neo4j:5.2")
-        .withPlugins(MountableFile.forHostPath("target/neo4j-module-basics-all.jar"))
-        ;
+        .withPlugins(MountableFile.forHostPath("target/neo4j-module-basics-all.jar"));
 
     @Test
     void quote_chuck_norris() {
