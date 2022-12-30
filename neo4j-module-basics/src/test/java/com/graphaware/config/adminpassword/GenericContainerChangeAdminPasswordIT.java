@@ -33,7 +33,7 @@ class GenericContainerChangeAdminPasswordIT {
     private static final String ANOTHER_PASSWORD = "QuickSilver";
 
     @Container
-    private final GenericContainer genericContainer = new GenericContainer<>(DockerImageName.parse("neo4j:5.1"))
+    private final GenericContainer genericContainer = new GenericContainer<>(DockerImageName.parse("neo4j:5.2"))
         .withEnv("NEO4J_AUTH","neo4j/"+ANOTHER_PASSWORD)
         .withExposedPorts(7687);
 

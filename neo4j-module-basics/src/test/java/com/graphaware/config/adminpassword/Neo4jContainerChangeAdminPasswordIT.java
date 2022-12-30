@@ -32,7 +32,7 @@ class Neo4jContainerChangeAdminPasswordIT {
     private static final String ANOTHER_PASSWORD = "QuickSilver";
 
     @Container
-    private final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.1")
+    private final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.2")
         .withAdminPassword(ANOTHER_PASSWORD);
 
 

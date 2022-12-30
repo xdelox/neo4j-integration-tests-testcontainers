@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class Neo4jLoadPluginsIT {
 
     @Container
-    private static final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.1")
+    private static final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.2")
         .withPlugins(MountableFile.forHostPath("target/neo4j-module-basics-all.jar")) //This first
         .withLabsPlugins(Neo4jLabsPlugin.APOC);
 
