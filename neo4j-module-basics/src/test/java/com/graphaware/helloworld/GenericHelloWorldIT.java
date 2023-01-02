@@ -1,37 +1,28 @@
-package com.graphaware.config.adminpassword;
+package com.graphaware.helloworld;
 
-
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.neo4j.driver.*;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.wait.strategy.HttpWaitStrategy;
-import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 import org.testcontainers.containers.wait.strategy.WaitAllStrategy;
-import org.testcontainers.containers.wait.strategy.WaitStrategy;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.net.HttpURLConnection;
 import java.time.Duration;
-import java.util.List;
 
 import static com.graphaware.strategies.WaitingStrategies.WAIT_FOR_BOLT;
 import static com.graphaware.strategies.WaitingStrategies.WAIT_FOR_HTTP;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @Testcontainers
-@Tag("generic")
-class GenericContainerChangeAdminPasswordIT {
-
-    private static final String ANOTHER_PASSWORD = "QuickSilver";
-
+@Tag("neo4j-module")
+class GenericHelloWorldIT {
 
     @Container
     private final GenericContainer genericContainer = new GenericContainer<>(DockerImageName.parse("neo4j:5.2"))
-        .withEnv("NEO4J_AUTH", "neo4j/" + ANOTHER_PASSWORD)
+        .withEnv("NEO4J_AUTH", "neo4j/password")
         .withExposedPorts(7687, 7474)
         .waitingFor(new WaitAllStrategy()
             .withStrategy(WAIT_FOR_BOLT)
@@ -39,22 +30,25 @@ class GenericContainerChangeAdminPasswordIT {
             .withStartupTimeout(Duration.ofMinutes(2)
             )
         );
+    ;
 
     @Test
-    void change_admin_password() {
+    void should_return_one() {
         genericContainer.start();
-
-        AuthToken authToken = AuthTokens.basic("neo4j", ANOTHER_PASSWORD);
-        String boltUrl = "bolt://" + genericContainer.getHost() + ":" + genericContainer.getMappedPort(7687);
-        System.out.println(boltUrl);
+        AuthToken authToken = AuthTokens.basic("neo4j", "password");
         try (
-            Driver driver = GraphDatabase.driver(boltUrl, authToken);
+            Driver driver = GraphDatabase.driver(getBoltUrl(), authToken);
             Session session = driver.session();
         ) {
-            final List<org.neo4j.driver.Record> result = session.run("RETURN 1 as test").list();
-            assertThat(result).hasSize(1);
+            var result = session.run("RETURN 1 as my_response").single().get("my_response").asInt();
+
+            assertThat(result).isEqualTo(1);
         }
     }
 
-
+    @NotNull
+    private String getBoltUrl() {
+        return "bolt://" + genericContainer.getHost() + ":" + genericContainer.getMappedPort(7687);
+    }
 }
+

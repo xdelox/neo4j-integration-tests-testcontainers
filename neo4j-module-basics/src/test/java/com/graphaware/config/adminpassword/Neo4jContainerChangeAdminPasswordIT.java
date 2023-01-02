@@ -20,15 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("neo4j-module")
 class Neo4jContainerChangeAdminPasswordIT {
 
-    //  private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(AdminPasswordConfigIT.class);
-
-    public static final WaitStrategy WAIT_FOR_BOLT = new LogMessageWaitStrategy()
-        .withRegEx(String.format(".*Bolt enabled on .*:%d\\.\n", 7687));
-
-    private static final WaitStrategy WAIT_FOR_HTTP = new HttpWaitStrategy()
-        .forPort(7474)
-        .forStatusCodeMatching(response -> response == HttpURLConnection.HTTP_OK);
-
     private static final String ANOTHER_PASSWORD = "QuickSilver";
 
     @Container
