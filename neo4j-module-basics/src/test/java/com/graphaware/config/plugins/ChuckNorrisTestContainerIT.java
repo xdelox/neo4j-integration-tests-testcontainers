@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ChuckNorrisTestContainerIT {
 
     @Container
-    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer("neo4j:5.2")
+    private static final Neo4jContainer<?> neo4jContainer = new Neo4jContainer("neo4j:5.5")
         .withPlugins(MountableFile.forHostPath("target/neo4j-module-basics-all.jar"));
 
     @Test

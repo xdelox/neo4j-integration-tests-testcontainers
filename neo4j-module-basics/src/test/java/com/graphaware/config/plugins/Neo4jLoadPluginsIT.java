@@ -7,6 +7,7 @@ import org.testcontainers.containers.Neo4jContainer;
 import org.testcontainers.containers.Neo4jLabsPlugin;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.MountableFile;
 
 import java.lang.Record;
@@ -21,9 +22,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 class Neo4jLoadPluginsIT {
 
     @Container
-    private static final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.2")
-        .withPlugins(MountableFile.forHostPath("target/neo4j-module-basics-all.jar")) //This first
-        .withLabsPlugins(Neo4jLabsPlugin.APOC);
+    private static final Neo4jContainer neo4jContainer =
+        new Neo4jContainer(DockerImageName.parse("neo4j:5.5"))
+            .withLabsPlugins(Neo4jLabsPlugin.APOC, Neo4jLabsPlugin.GRAPH_DATA_SCIENCE)
+            .withPlugins(MountableFile.forHostPath("target/neo4j-module-basics-all.jar"))
+        ;
 
     @Test
     void load_neo4jlabs_plugins() {
@@ -40,7 +43,6 @@ class Neo4jLoadPluginsIT {
     }
 
 
-
     @Test
     void load_generic_plugin() {
         AuthToken authToken = AuthTokens.basic("neo4j", "password");
@@ -53,7 +55,7 @@ class Neo4jLoadPluginsIT {
             session.run("CREATE (:Person)-[:INCOMING]->(:Movie {id:1})-[:OUTGOING]->(:Person)");
             var record = session.run("MATCH (u:Movie {id:1}) CALL example.getRelationshipTypes(u) YIELD outgoing, incoming RETURN outgoing, incoming").single();
 
-            assertEquals(1,record.get("outgoing").asInt());
+            assertEquals(1, record.get("outgoing").asInt());
             assertEquals(1, record.get("incoming").asInt());
         }
     }

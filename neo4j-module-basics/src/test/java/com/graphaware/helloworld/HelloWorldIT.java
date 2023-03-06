@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class HelloWorldIT {
 
     @Container
-    private final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.2");
+    private final Neo4jContainer neo4jContainer = new Neo4jContainer("neo4j:5.5");
 
     @Test
     void should_return_one() {

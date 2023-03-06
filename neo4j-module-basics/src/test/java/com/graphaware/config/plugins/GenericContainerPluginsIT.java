@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GenericContainerPluginsIT {
 
     @Container
-    private static final GenericContainer genericContainer = new GenericContainer<>(DockerImageName.parse("neo4j:5.2"))
+    private static final GenericContainer genericContainer = new GenericContainer<>(DockerImageName.parse("neo4j:5.5"))
         .withEnv("NEO4J_AUTH", "neo4j/password")
         .withEnv("NEO4JLABS_PLUGINS", "[\"apoc\"]")
         .withFileSystemBind("target/neo4j-module-basics-all.jar", "/plugins/neo4j-module-basics-all.jar", BindMode.READ_WRITE)
